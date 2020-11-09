@@ -47,7 +47,7 @@ You can install this chart with
     $ helm repo add maibornwolff-opsbot https://MaibornWolff.github.io/opsbot
     $ helm install my-release maibornwolff-opsbot/opsbot --values my-values.yaml
 
-To further simplify the deployment even more there is also a predefined helmfile (deploy/helm/opsbot) available.
+To further simplify the deployment even more there is also a predefined helmfile (deploy/helmfile/helmfile.yaml) available.
 You can configure the deployment of the backend service and also provide the Opsbot configuration in one file.
 It is also possible to add custom plugins which will get deployed in a configmap and added to the Opsbot container.
 
