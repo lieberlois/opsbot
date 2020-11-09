@@ -1,0 +1,43 @@
+{
+    "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.7/MicrosoftTeams.schema.json",
+    "manifestVersion": "1.7",
+    "version": "1.0.0",
+    "id": "<uuid>",
+    "packageName": "com.maibornwolff.opsbot",
+    "developer": {
+        "name": "Your Name",
+        "websiteUrl": "https://example.com",
+        "privacyUrl": "https://example.com",
+        "termsOfUseUrl": "https://example.com"
+    },
+    "icons": {
+        "color": "color.png",
+        "outline": "outline.png"
+    },
+    "name": {
+        "short": "OpsBot",
+        "full": "OpsBot"
+    },
+    "description": {
+        "short": "OpsBot",
+        "full": "OpsBot"
+    },
+    "accentColor": "#40497E",
+    "bots": [
+        {
+            "botId": "<uuid>",
+            "scopes": [
+                "team"
+            ],
+            "supportsFiles": false,
+            "isNotificationOnly": false
+        }
+    ],
+    "permissions": [
+        "identity",
+        "messageTeamMembers"
+    ],
+    "validDomains": [
+        "<url of your backend installation>"
+    ]
+}

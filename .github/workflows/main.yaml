@@ -1,0 +1,46 @@
+name: Publish Docker image
+on:
+  push:
+    tags:
+      - 'v*'
+jobs:
+  release:
+    name: Create new release
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out the repo
+        uses: actions/checkout@v2
+
+      - name: Push to Docker Hub
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: maibornwolff/opsbot
+          tag_with_ref: true
+
+      - name: Prepare helm chart
+        env:
+          GITHUB_REF: ${{ github.ref }}
+        run: |
+          sed -i 's/0.0.1/'"${GITHUB_REF//refs\/tags\/v}"'/' deploy/helm/opsbot/Chart.yaml
+          sed -i 's/v0.0.1/'"${GITHUB_REF//refs\/tags\/}"'/' deploy/helm/opsbot/values.yaml
+
+      - name: Publish helm chart
+        uses: stefanprodan/helm-gh-pages@master
+        with:
+          charts_dir: deploy/helm
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+

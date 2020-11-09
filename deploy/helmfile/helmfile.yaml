@@ -1,0 +1,59 @@
+
+repositories:
+  - name: maibornwolff-opsbot
+    url: https://MaibornWolff.github.io/opsbot
+
+releases:
+
+  - name: opsbot
+    chart: maibornwolff-opsbot/opsbot
+    # version: 1.0.0 # Specify specific chart version
+    namespace: some-namespace
+    tillerNamespace: some-namespace
+
+    values:
+
+    - ingress:
+        enabled: true
+        annotations:
+          nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+        hosts:
+          - host: <URL>
+            paths:
+              - /
+        tls:
+          - secretName: opsbot-tls
+            hosts:
+              - <URL>
+        certificate:
+          enabled: true
+          clusterIssuer: letsencrypt-prod
+
+    - resources:
+        limits:
+          cpu: 100m
+          memory: 128Mi
+        requests:
+          cpu: 100m
+          memory: 128Mi
+
+      # Read additional plugins from custom_plugins directory.
+    - additional_plugins:
+      {{- range $index, $file := ( exec "bash" (list "-c" "echo -n custom_plugins/*.py") | splitList " " ) }}
+      - name: "{{ base $file }}"
+        content: |
+        {{ readFile $file | nindent 10 }}
+      {{ end }}
+
+    - configuration:
+
+        teams:
+          app_id: "APP_ID"
+          app_password: "PASSWORD"
+
+        persistence:
+          plugin: configmap
+          configmap_name: opsbot-configuration
+          configmap_namespace: some-namespace
+
+        etc...

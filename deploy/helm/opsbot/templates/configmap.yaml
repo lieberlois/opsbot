@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "opsbot.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "opsbot.name" . }}
+    helm.sh/chart: {{ include "opsbot.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+data:
+  config.yaml: |-
+    {{- toYaml .Values.configuration | nindent 4 }}

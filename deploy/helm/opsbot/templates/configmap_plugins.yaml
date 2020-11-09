@@ -1,0 +1,16 @@
+{{ if .Values.additional_plugins}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "opsbot.fullname" . }}-plugins
+  labels:
+    app.kubernetes.io/name: {{ include "opsbot.name" . }}
+    helm.sh/chart: {{ include "opsbot.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+data:
+  {{- range .Values.additional_plugins }}
+  {{ .name }}: |
+    {{ .content | nindent 4  }}
+  {{ end }}
+{{ end }}
