@@ -77,8 +77,6 @@ timezone: "Europe/Berlin" # The current time zone
 
 deactivate_plugins: # A list of plugins that should be deactivated
 
-woman: # A list of female team members.
-  
 additional_plugin_dir: # Directory with additional plugins
 
 teams:
@@ -121,6 +119,41 @@ actions: # Configuration for the different plugins
   alerts:
     base_url: 
 ```
+
+### Commands
+
+Below you find a list of all commands, the Opsbot understands.
+All commands are issued by mentioning the Opsbot either in a channel or via direct message. (@Opsbot \<command\>)
+
+##### Global commands:
+
+| Command | Description |
+|---------|-------------|
+| init | Initialize the Opsbot. The default channel will be set to the one the command was issued in |
+| register channel XX | Configure the current channel for messages of type XX |
+| unregister channel XX | Remove the channel assignment for type XX |
+| help | Print out the help |
+
+##### Operations plugin:
+
+| Command | Description |
+|---------|-------------|
+| register @user | Add an user to the operations responsible rotation |
+| unregister @user | Remove a user from the rotation |
+| next <br/> weiter [@user] | Move to the next person in the rotation or the mentioned one |
+| heute <br/> today <br/> wer | Prints out who is the responsible today |
+| morgen <br/> tomorrow | Prints out who is the responsible tomorrow |
+| 'Urlaub am dd.mm.yyyy' [@user] <br/> 'Urlaub von dd.mm.yyyy bis dd.mm.yyyy' [@user] <br/> 'Urlaub dd.mm.yyyy - dd.mm.yyyy' [@user] | Add your vacation or those of another mentioned person |
+
+##### Jira plugin:
+
+| Command | Description |
+|---------|-------------|
+| gen subtasks XXX-XXXX | Reads tasks from the Jira ticket XXX-XXXX and generates subtasks for each |
+| show tasks XXX-XXXX | List tasks from the Jira ticket XXX-XXXX |
+| fix XXX-XXXX | Solves the issue XXX-XXXX |
+| defects | Lists current defects |
+
 
 ### Channels
 
