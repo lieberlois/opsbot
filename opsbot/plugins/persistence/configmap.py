@@ -46,7 +46,7 @@ class ConfigmapPersistencePlugin(PersistencePlugin):
 
     def read_state(self):
         try:
-            data = self._kubernetes_client.read_namespaced_config_map(self._configmap_name, self._configmap_namespace, pretty=False, exact=False, export=True).data
+            data = self._kubernetes_client.read_namespaced_config_map(self._configmap_name, self._configmap_namespace, pretty=False, exact=False).data
             if data and 'yaml_data' in data:
                 return oyaml.safe_load(data['yaml_data'])
             else:
