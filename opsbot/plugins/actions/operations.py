@@ -29,6 +29,9 @@ class OperationsActionPlugin(ActionPlugin):
         self._how_to_link = self.read_config_value('how_to_link')
         self.add_scheduled_job(self.daily_next, 'cron', id='daily_next', day_of_week='mon-fri', hour=8, minute=0)
         self.add_scheduled_job(self.daily_preview, 'cron', id='daily_preview', day_of_week='mon-fri', hour=17, minute=0)
+        self._operator_text_today = self.read_config_value('operator_text_today')
+        self._operator_text_tomorrow = self.read_config_value('operator_text_tomorrow')
+
 
     def get_commands(self) -> List[Command]:
         return [
@@ -115,7 +118,10 @@ class OperationsActionPlugin(ActionPlugin):
 
     def print_current(self, activity, mentions):
         member = self.current()
-        msg = f'Hey <at>{member}</at> Du bist heute {format_gender(member)} {self._operator_text()}.'
+        if self._operator_text_today:
+            msg = f'Hey <at>{member}</at>, {self._operator_text_today}'.replace('{gender}', format_gender(member))
+        else:
+            msg = f'Hey <at>{member}</at> Du bist heute {format_gender(member)} {self._operator_text()}.'
 
         self.send_reply(msg, reply_to=activity, mentions=[member])
 
@@ -147,7 +153,11 @@ class OperationsActionPlugin(ActionPlugin):
             member = self._override_user
         else:
             member = self._members.get()
-        msg = f'Hey <at>{member}</at> Du bist heute {format_gender(member)} {self._operator_text()}. {self._sayings_responsible_today.next()}'
+        
+        if self._operator_text_today:
+            msg = f'Hey <at>{member}</at>, {self._operator_text_today} {self._sayings_responsible_today.next()}'.replace('{gender}', format_gender(member))
+        else:
+            msg = f'Hey <at>{member}</at> Du bist heute {format_gender(member)} {self._operator_text()}. {self._sayings_responsible_today.next()}'
         if reply_to:
             self.send_reply(msg, mentions=[member], reply_to=reply_to)
         else:
@@ -159,7 +169,11 @@ class OperationsActionPlugin(ActionPlugin):
         else:
             member = self._members.peek()
         tomorrow = next_workday_string()
-        msg = f'Hey <at>{member}</at> Du wirst {tomorrow} {format_gender(member)} {self._operator_text()} sein.'
+        
+        if self._operator_text_tomorrow:
+            msg = f'Hey <at>{member}</at>, {self._operator_text_tomorrow}'.replace('{gender}', format_gender(member)).replace('{tomorrow}', tomorrow)
+        else:
+            msg = f'Hey <at>{member}</at> Du wirst {tomorrow} {format_gender(member)} {self._operator_text()} sein.'
         if reply_to:
             self.send_reply(msg, mentions=[member], reply_to=reply_to)
         else:
