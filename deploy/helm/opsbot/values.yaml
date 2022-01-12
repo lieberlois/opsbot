@@ -48,3 +48,11 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+# Use this option to mount extra volumes into the opsbot pod
+extraVolumes: []
+  # - name: persistence
+  #   def:
+  #     persistentVolumeClaim:
+  #       claimName: opsbot-persistence
+  #   mountPath: /mnt/persistence
