@@ -186,20 +186,20 @@ class OperationsActionPlugin(ActionPlugin):
             name = activity.from_property.name
         text = activity.text.strip()
         try:
-            r_1 = re.compile(r".*[uU]rlaub am (\d{1,2}\.\d{1,2}\.\d{4}).*")
-            r_2 = re.compile(r".*[uU]rlaub vo[nm] (\d{1,2}\.\d{1,2}\.\d{4}) bis (\d{1,2}\.\d{1,2}\.\d{4}).*")
-            r_3 = re.compile(r".*[uU]rlaub (\d{1,2}\.\d{1,2}\.\d{4}) - (\d{1,2}\.\d{1,2}\.\d{4}).*")
+            r_1 = re.compile(r".*[uU]rlaub (\d{1,2}\.\d{1,2}\.\d{4})(?: )*-(?: )*(\d{1,2}\.\d{1,2}\.\d{4}).*")
+            r_2 = re.compile(r".*[uU]rlaub (?:vo[nm] )*(\d{1,2}\.\d{1,2}\.\d{4}) bis (\d{1,2}\.\d{1,2}\.\d{4}).*")
+            r_3 = re.compile(r".*[uU]rlaub (?:am )*(\d{1,2}\.\d{1,2}\.\d{4}).*")
             if r_1.match(text):
-                from_string = r_1.match(text).groups()[0]
-                to_string = from_string
+                groups = r_1.match(text).groups()
+                from_string = groups[0]
+                to_string = groups[1]
             elif r_2.match(text):
                 groups = r_2.match(text).groups()
                 from_string = groups[0]
                 to_string = groups[1]
             elif r_3.match(text):
-                groups = r_3.match(text).groups()
-                from_string = groups[0]
-                to_string = groups[1]
+                from_string = r_3.match(text).groups()[0]
+                to_string = from_string
             else:
                 self.send_reply(
                     "Ich habe dich nicht verstanden. Ich verstehe die folgenden Formate: 'Urlaub am dd.mm.yyyy', 'Urlaub von dd.mm.yyyy bis dd.mm.yyyy' oder 'Urlaub dd.mm.yyyy - dd.mm.yyyy'",

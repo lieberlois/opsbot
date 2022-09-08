@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "opsbot.fullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/name: {{ include "opsbot.name" . }}
     helm.sh/chart: {{ include "opsbot.chart" . }}
@@ -22,6 +23,9 @@ spec:
         checksum/configmap: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
         checksum/configmap_plugins: {{ include (print $.Template.BasePath "/configmap_plugins.yaml") . | sha256sum }}
     spec:
+      {{- if .Values.rbac.enabled }}
+      serviceAccountName: {{ .Release.Name }}
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -48,9 +52,9 @@ spec:
             - name: plugins
               mountPath: /additional_plugins
             {{- end }}
-            {{- range .Values.extraVolumes }}
-            - name: {{ .name | required "extraVolumes .name is required" }}
-              mountPath: {{ .mountPath | required "extraVolumes .mountPath is required "}}
+            {{- if .Values.pvc.enabled }}
+            - mountPath: /mnt/persistence
+              name: persistence
             {{- end }}
           env:
             - name: OPSBOT_CONFIG_FILE
@@ -80,8 +84,9 @@ spec:
           configMap:
             name: {{ include "opsbot.fullname" . }}-plugins
         {{- end }}
-        {{- range .Values.extraVolumes }}
-        - name: {{ .name | required "extraVolumes .name is required" }}
-          {{- toYaml .def | nindent 10 }}
+        {{- if .Values.pvc.enabled }}
+        - name: persistence
+          persistentVolumeClaim:
+            claimName: {{ include "opsbot.fullname" . }}-persistence
         {{- end }}
 

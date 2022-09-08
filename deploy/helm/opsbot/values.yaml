@@ -3,7 +3,7 @@ replicaCount: 1
 
 image:
   repository: maibornwolff/opsbot
-  tag: v0.0.1
+  tag: dev
   pullPolicy: IfNotPresent
 
 nameOverride: ""
@@ -12,6 +12,13 @@ fullnameOverride: ""
 service:
   type: ClusterIP
   port: 5000
+
+rbac:
+  enabled: false
+
+pvc:
+  enabled: false
+  size: "2Gi"
 
 ingress:
   enabled: false
@@ -56,3 +63,5 @@ extraVolumes: []
   #     persistentVolumeClaim:
   #       claimName: opsbot-persistence
   #   mountPath: /mnt/persistence
+
+configuration: {}  # Check documentation for configuration options
