@@ -1,10 +1,10 @@
 {{- if .Values.ingress.enabled -}}
 {{- $fullName := include "opsbot.fullname" . -}}
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ $fullName }}
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Values.ingress.namespace }}
   labels:
     app.kubernetes.io/name: {{ include "opsbot.name" . }}
     helm.sh/chart: {{ include "opsbot.chart" . }}
@@ -15,26 +15,23 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-{{- if .Values.ingress.tls }}
+{{- if and .Values.ingress.tls .Values.ingress.apiHost }}
   tls:
-  {{- range .Values.ingress.tls }}
     - hosts:
-      {{- range .hosts }}
-        - {{ . | quote }}
-      {{- end }}
-      secretName: {{ .secretName }}
-  {{- end }}
+        - {{ .Values.ingress.apiHost }}
+      secretName: {{ .Values.ingress.tls.secretName }}
 {{- end }}
   rules:
-  {{- range .Values.ingress.hosts }}
-    - host: {{ .host | quote }}
-      http:
+    - http:
         paths:
-        {{- range .paths }}
-          - path: {{ . }}
+          - path: {{ .Values.ingress.path }}
+            pathType: ImplementationSpecific
             backend:
-              serviceName: {{ $fullName }}
-              servicePort: http
-        {{- end }}
-  {{- end }}
+              service:
+                name: {{ $fullName }}
+                port:
+                  number: {{ .Values.ingress.port | default 5000 }}
+      {{- if .Values.ingress.apiHost }}
+      host: {{ .Values.ingress.apiHost }}
+      {{- end }}
 {{- end }}

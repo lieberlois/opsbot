@@ -100,6 +100,17 @@ pvc:
   enabled: true
   size: "2Gi"
 
+ingress:
+  enabled: false
+  namespace: opsbot # The namespace where the opsbot service is deployed
+  annotations:
+    # Example annotations
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/use-regex: "true"
+  path: "/opsbot(/.*)"
+  port: 5000
+
 actions: # Configuration for the different plugins
 
   operations:
