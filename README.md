@@ -102,7 +102,6 @@ pvc:
 
 ingress:
   enabled: false
-  namespace: opsbot # The namespace where the opsbot service is deployed
   annotations:
     # Example annotations
     kubernetes.io/ingress.class: nginx
@@ -110,6 +109,7 @@ ingress:
     nginx.ingress.kubernetes.io/use-regex: "true"
   path: "/opsbot(/.*)"
   port: 5000
+  host: "your-domain.com"
 
 actions: # Configuration for the different plugins
 

@@ -52,6 +52,10 @@ spec:
             - name: plugins
               mountPath: /additional_plugins
             {{- end }}
+            {{- range .Values.extraVolumes }}
+            - name: {{ .name | required "extraVolumes .name is required" }}
+              mountPath: {{ .mountPath | required "extraVolumes .mountPath is required "}}
+            {{- end }}
             {{- if .Values.pvc.enabled }}
             - mountPath: /mnt/persistence
               name: persistence
