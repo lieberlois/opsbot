@@ -68,7 +68,7 @@ class RemindersActionPlugin(ActionPlugin):
         self.add_scheduled_job(self._remind_events, 'cron', id='remind_events', day_of_week='mon-fri', hour=8, minute=0)
 
         # For debugging:
-        # self.add_scheduled_job(self._remind_events, 'cron', id='debug', day_of_week='*', hour='*', minute='*')
+        self.add_scheduled_job(self._remind_events, 'cron', id='debug', day_of_week='*', hour='*', minute='*')
         
         self._latest_reminder_run = _parse_date(
             self.read_variable("latest_reminder_run", default=str(today_date())),
