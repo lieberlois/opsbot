@@ -225,3 +225,9 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
+# Configuration file
+opsbot_config.yaml
+
+# Persistence file
+persistence.yaml
+

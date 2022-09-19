@@ -1,4 +1,4 @@
-Flask==1.1.2
+Flask==2.1.0
 requests==2.25.1
 botbuilder-core==4.14.0
 botbuilder-schema==4.14.0
@@ -8,6 +8,6 @@ kubernetes==18.20.0
 holidays==0.10.3
 beautifulsoup4==4.9.3
 oyaml==1.0
-click-shell[readline]==2.0
+click-shell[readline]==2.1
 pytz==2020.1
 aiohttp==3.7.4.post0

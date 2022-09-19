@@ -1,4 +1,4 @@
-from datetime import timedelta, datetime
+from datetime import timedelta, datetime, date
 
 import holidays
 import pytz
@@ -23,6 +23,9 @@ HOLIDAYS = holidays.CountryHoliday('DE', prov="BY", state=None)
 
 def now():
     return datetime.now(tz=TIMEZONE)
+
+def today_date():
+    return date.today()
 
 
 def is_day_a_workday(date_obj):
@@ -52,4 +55,3 @@ def next_workday_string():
 
 def is_it_late():
     return now().hour >= 17 or now().isoweekday() >= 6
-

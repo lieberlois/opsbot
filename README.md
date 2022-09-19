@@ -118,6 +118,14 @@ actions: # Configuration for the different plugins
 
   alerts:
     base_url: 
+
+  reminders:
+    events:
+    - title: 
+      description: 
+      event_date:    # Format "dd.mm.yy"
+      notifications: # String array of notification spans (<amount>[d|w|m|y]) e.g. ['1d', '1w', '1m', '1y']
+      mentions:      # String array of members to mention (optional)
 ```
 
 ### Commands

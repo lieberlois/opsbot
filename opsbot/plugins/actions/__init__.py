@@ -1,7 +1,6 @@
 from abc import abstractmethod
-from collections import Callable
 from dataclasses import dataclass
-from typing import Optional, List
+from typing import Optional, List, Callable
 
 from .. import OpsbotPlugin
 from ...utils.time_utils import TIMEZONE

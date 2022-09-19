@@ -184,7 +184,7 @@ class OperationsActionPlugin(ActionPlugin):
             name = mentions[0]
         else:
             name = activity.from_property.name
-        text = activity.text
+        text = activity.text.strip()
         try:
             r_1 = re.compile(r".*[uU]rlaub am (\d{1,2}\.\d{1,2}\.\d{4}).*")
             r_2 = re.compile(r".*[uU]rlaub vo[nm] (\d{1,2}\.\d{1,2}\.\d{4}) bis (\d{1,2}\.\d{1,2}\.\d{4}).*")
