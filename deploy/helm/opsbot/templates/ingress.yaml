@@ -15,11 +15,13 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-{{- if and .Values.ingress.tls .Values.ingress.host }}
+{{- if and .Values.ingress.tls.enabled .Values.ingress.host }}
   tls:
     - hosts:
         - {{ .Values.ingress.host }}
+      {{- if .Values.ingress.tls.secretName }}
       secretName: {{ .Values.ingress.tls.secretName }}
+      {{- end }}
 {{- end }}
   rules:
     - http:
@@ -30,7 +32,7 @@ spec:
               service:
                 name: {{ $fullName }}
                 port:
-                  number: 5000
+                  name: http
       {{- if .Values.ingress.host }}
       host: {{ .Values.ingress.host }}
       {{- end }}
