@@ -91,6 +91,25 @@ persistence: # The persistence plugin to use. Currently available: file | config
   # configmap_name: 
   # configmap_namespace: 
 
+rbac:
+  # Required when using the ConfigMap plugin for persistence
+  enabled: true
+
+pvc:
+  # Required when using the File plugin for persistence
+  enabled: true
+  size: "2Gi"
+
+ingress:
+  enabled: false
+  annotations:
+    # Example annotations
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/use-regex: "true"
+  path: "/opsbot(/.*)"
+  host: "your-domain.com"
+
 actions: # Configuration for the different plugins
 
   operations:
