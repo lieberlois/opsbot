@@ -101,6 +101,10 @@ spec:
           configMap:
             name: {{ include "opsbot.fullname" . }}-plugins
         {{- end }}
+        {{- range .Values.extraVolumes }}
+        - name: {{ .name | required "extraVolumes .name is required" }}
+          {{- toYaml .def | nindent 10 }}
+        {{- end }}
         {{- if .Values.pvc.enabled }}
         - name: persistence
           persistentVolumeClaim:
