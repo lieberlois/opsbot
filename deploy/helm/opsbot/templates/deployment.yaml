@@ -8,6 +8,13 @@ metadata:
     helm.sh/chart: {{ include "opsbot.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
+    {{- if .Values.labels }}
+{{- toYaml .Values.labels | nindent 4 }}
+    {{- end }}
+  {{- if .Values.annotations }}
+  annotations:
+    {{- toYaml .Values.annotations | nindent 4 }}
+  {{- end }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -19,9 +26,15 @@ spec:
       labels:
         app.kubernetes.io/name: {{ include "opsbot.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
+        {{- if .Values.podLabels }}
+{{- toYaml .Values.podLabels | nindent 8 }}
+        {{- end }}
       annotations:
         checksum/configmap: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
         checksum/configmap_plugins: {{ include (print $.Template.BasePath "/configmap_plugins.yaml") . | sha256sum }}
+      {{- if .Values.podAnnotations }}
+{{- toYaml .Values.podAnnotations | nindent 8 }}
+      {{- end }}
     spec:
       {{- if .Values.rbac.enabled }}
       serviceAccountName: {{ .Release.Name }}
