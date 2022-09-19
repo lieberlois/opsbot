@@ -186,19 +186,14 @@ class OperationsActionPlugin(ActionPlugin):
             name = activity.from_property.name
         text = activity.text.strip()
         try:
-            r_1 = re.compile(r".*[uU]rlaub (\d{1,2}\.\d{1,2}\.\d{4})(?: )*-(?: )*(\d{1,2}\.\d{1,2}\.\d{4}).*")
-            r_2 = re.compile(r".*[uU]rlaub (?:vo[nm] )*(\d{1,2}\.\d{1,2}\.\d{4}) bis (\d{1,2}\.\d{1,2}\.\d{4}).*")
-            r_3 = re.compile(r".*[uU]rlaub (?:am )*(\d{1,2}\.\d{1,2}\.\d{4}).*")
+            r_1 = re.compile(r".*[uU]rlaub\s+(?:vo[nm])*\s*(\d{1,2}\.\d{1,2}\.\d{4})[^\d.]+(\d{1,2}\.\d{1,2}\.\d{4}).*")
+            r_2 = re.compile(r".*[uU]rlaub\s+(?:am )*\s*(\d{1,2}\.\d{1,2}\.\d{4}).*")
             if r_1.match(text):
                 groups = r_1.match(text).groups()
                 from_string = groups[0]
                 to_string = groups[1]
             elif r_2.match(text):
-                groups = r_2.match(text).groups()
-                from_string = groups[0]
-                to_string = groups[1]
-            elif r_3.match(text):
-                from_string = r_3.match(text).groups()[0]
+                from_string = r_2.match(text).groups()[0]
                 to_string = from_string
             else:
                 self.send_reply(

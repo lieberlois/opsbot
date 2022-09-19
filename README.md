@@ -108,7 +108,6 @@ ingress:
     nginx.ingress.kubernetes.io/rewrite-target: /$1
     nginx.ingress.kubernetes.io/use-regex: "true"
   path: "/opsbot(/.*)"
-  port: 5000
   host: "your-domain.com"
 
 actions: # Configuration for the different plugins
